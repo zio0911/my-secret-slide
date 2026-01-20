@@ -1,0 +1,47 @@
+{
+  "name": "free-image-viewer",
+  "version": "1.0.0",
+  "description": "무료 맥북 이미지 뷰어",
+  "author": "무료 맥북 이미지 뷰어(zio0911)",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "electron:build": "npm run build && npm run build:electron && electron-builder"
+  },
+  "dependencies": {
+    "@electron-toolkit/utils": "^4.0.0",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vue-tsc": "^2.0.26"
+  },
+  "build": {
+    "appId": "com.mysecret.slideviewer",
+    "productName": "free image viewer",
+
+    "files": [
+      "dist/**",
+      "dist-electron/**"
+    ],
+
+    "mac": {
+      "category": "public.app-category.photography",
+      "target": ["dmg"],
+      "icon": "build/icon.icns"
+    },
+
+    "directories": {
+      "buildResources": "build",
+      "output": "dist-electron"
+    }
+  }
+}
