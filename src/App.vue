@@ -169,6 +169,41 @@ const prevImage = () => {
       (currentIndex.value - 1 + images.value.length) % images.value.length
 }
 
+const deleteCurrentFile = () => {
+  if (!images.value.length) return
+
+  const indexToDelete = currentIndex.value
+  const file = images.value[indexToDelete]
+  const fullPath = path.join(currentPath.value, file)
+
+  if (!confirm(`이 파일을 삭제할까요?\n\n${file}`)) return
+
+  fs.unlinkSync(fullPath)
+
+  // 🔑 삭제 후 이미지 다시 로드
+  const files = fs.readdirSync(currentPath.value)
+  images.value = isSecretMode.value
+      ? files.filter(f => f.endsWith(SECRET_EXT))
+      : files.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
+
+  // 🔑 인덱스 보정
+  if (images.value.length === 0) {
+    currentIndex.value = 0
+    displayedImageSrc.value = placeholderImage
+    return
+  }
+
+  if (indexToDelete >= images.value.length) {
+    currentIndex.value = images.value.length - 1
+  } else {
+    currentIndex.value = indexToDelete
+  }
+
+  updateImage()
+}
+
+
+
 /* ================= Encrypt / Restore ================= */
 const encryptCurrentFile = () => {
   if (!secretKey.value) return
@@ -258,6 +293,7 @@ const handleKeydown = (e) => {
     return
   }
 
+  if (e.code === 'Backspace') deleteCurrentFile()
   if (e.code === 'ArrowRight') nextImage()
   if (e.code === 'ArrowLeft') prevImage()
   if (e.code === 'Space') togglePlay()
