@@ -86,7 +86,6 @@ let timer = null
 const startSlideShow = () => {
   stopSlideShow()
   isPlaying.value = true
-  alert('gogo');
   timer = setInterval(() => {
     nextImage()
   }, 2000)
@@ -96,7 +95,6 @@ const stopSlideShow = () => {
   if (timer) clearInterval(timer)
   timer = null
   isPlaying.value = false
-  alert('');
 }
 
 const togglePlay = () => {
